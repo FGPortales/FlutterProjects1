@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:quizzler_flutter/question.dart';
 import 'package:quizzler_flutter/quiz_brain.dart';
@@ -32,6 +34,7 @@ class QuizPage extends StatefulWidget {
 
 class _QuizPageState extends State<QuizPage> {
   List<Widget> scoreKeeper = [];
+  int countCorrect = 0;
 
   void checkAnswer(bool userPickedAnswer) {
     bool correctAnswer = quizBrain.getCorrectAnswer();
@@ -40,12 +43,13 @@ class _QuizPageState extends State<QuizPage> {
         Alert(
           context: context,
           title: 'Terminado!',
-          desc: 'Has llegado al final del cuestionario.',
+          desc: 'Has llegado al final del cuestionario. '
+                'Con una puntuación de ${countCorrect}/${scoreKeeper.length + 1}'
         ).show();
         quizBrain.reset();
         scoreKeeper = [];
       } else {
-        if (userPickedAnswer == correctAnswer) {
+        if (quizBrain.getAnswer(userPickedAnswer) == true) {
           scoreKeeper.add(Icon(Icons.check, color: Colors.green));
         } else {
           scoreKeeper.add(Icon(Icons.close, color: Colors.red));
@@ -58,6 +62,12 @@ class _QuizPageState extends State<QuizPage> {
 
   @override
   Widget build(BuildContext context) {
+    ScrollController _scrollController = ScrollController();
+    Timer(
+      Duration(seconds: 0),
+          () => _scrollController.jumpTo(_scrollController.position.maxScrollExtent),
+    );
+
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -116,8 +126,16 @@ class _QuizPageState extends State<QuizPage> {
             ),
           ),
         ),
-        Row(
-          children: scoreKeeper,
+        Expanded(
+          child: ListView.builder(
+            scrollDirection: Axis.horizontal,
+            shrinkWrap: true,
+            controller: _scrollController,
+            itemCount: scoreKeeper.length,
+            itemBuilder: (BuildContext ctxt, int Index){
+              return scoreKeeper[Index];
+            }
+          ),
         )
       ],
     );

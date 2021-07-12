@@ -3,21 +3,29 @@ import 'question.dart';
 class QuizBrain{
 
   int _questionNumber = 0;
+  int _countCorrect = 0;
 
   List<Question> _questionBank = [
-    Question('Some cats are actually allergic to humans', true),
-    Question('You can lead a cow down stairs but not up stairs.', false),
-    Question('Approximately one quarter of human bones are in the feet.', true),
-    Question('A slug\'s blood is green.', true),
-    Question('Buzz Aldrin\'s mother\'s maiden name was \"Moon\".', true),
-    Question('It is illegal to pee in the Ocean in Portugal.', true),
-    Question('No piece of square dry paper can be folded in half more than 7 times.', false),
-    Question('In London, UK, if you happen to die in the House of Parliament, you are technically entitled to a state funeral, because the building is considered too sacred a place.', true),
-    Question('The loudest sound produced by any animal is 188 decibels. That animal is the African Elephant.', false),
-    Question('The total surface area of two human lungs is approximately 70 square metres.', true),
-    Question('Google was originally called \"Backrub\".', true),
-    Question('Chocolate affects a dog\'s heart and nervous system; a few ounces are enough to kill a small dog.', true),
-    Question('In West Virginia, USA, if you accidentally hit an animal with your car, you are free to take it home to eat.', true),
+    Question('1. Se llama software al conjunto de programas, instrucciones y reglas informáticas para ejecutar ciertas tareas en una computadora.', true),
+    Question('2. El software es el soporte lógico de un sistema informático.', true),
+    Question('3. Los ordenadores y las máquinas de lógica cableadas tienen un funcionamiento basada en la lógica programada.', false),
+    Question('4. En un ordenador la única limitación es la capacidad del hardware.', true),
+    Question('5. Los programas informáticos no permiten utilizar el hardware para multitud de aplicaciones y controlar su uso.', false),
+    Question('6. El software de sistema es el que gestiona el hardware.', true),
+    Question('7. El software de programación son las herramientas que no permiten realizar programas, traduciendo las instrucciones a lenguaje máquina.', false),
+    Question('8. El software de aplicación son los programas con una función más o menos específica en cualquier campo subceptible de ser controlado informáticamente.', true),
+    Question('9. El software libre es el que otorga libertad de uso, copia y distribución a los usuarios.', true),
+    Question('10. El software de propietario es aquel cuyas condiciones de uso, copia y distribución están sometidas a normas o restricciones.', true),
+    Question('11. El software libre se considera un bien privado.', false),
+    Question('12. Un sistema operativo es el software de sistema que permite al ordenador el arranque, la gestión de los recursos y la comunicación usuario-dispositivos físicos.', true),
+    Question('13. El sistema operativo debe gestionar los recursos del hardware.', true),
+    Question('14. El sistema operativo no sirve de interfaz entre el usuario y la computadora.', false),
+    Question('15. El sistema operativo no gestiona la información en forma de archivos que contienen los datos.', false),
+    Question('16. El sistema operativo gestiona las tareas en ejecución, asignando tiempos y prioridades.', true),
+    Question('17. El sistema operativo no proporciona seguridad en la gestión de recursos.', false),
+    Question('18. El sistema operativo es capaz de actualizarse, diagnosticar y resolver problemas.', true),
+    Question('19. La evolución de los sistemas operativos ha estado marcada por su forma de gestionar los datos, número de usuarios y capacidad de ejecutar varias tareas al mismo tiempo.', true),
+    Question('20. El software propietario es aquel que no es libre, tiene limitados los derechos de uso, copia, distribución o modificación.', true)
   ];
 
   void nextQuestion() {
@@ -43,9 +51,23 @@ class QuizBrain{
     }
   }
 
+  bool getAnswer(bool ans) {
+    bool res = true;
+    if (getCorrectAnswer() == ans){
+      res = true;
+      _countCorrect++;
+    }else{
+      res = false;
+    }
+    return res;
+  }
+
   void reset() {
     _questionNumber = 0;
+    _countCorrect=0;
   }
+
+
 }
 
 
