@@ -34,28 +34,17 @@ class QuizPage extends StatefulWidget {
 
 class _QuizPageState extends State<QuizPage> {
   List<Widget> scoreKeeper = [];
-  int countCorrect = 0;
+  bool disableButton = false;
 
   void checkAnswer(bool userPickedAnswer) {
     bool correctAnswer = quizBrain.getCorrectAnswer();
     setState(() {
-      if (quizBrain.isFinished() == true) {
-        Alert(
-          context: context,
-          title: 'Terminado!',
-          desc: 'Has llegado al final del cuestionario. '
-                'Con una puntuación de ${countCorrect}/${scoreKeeper.length + 1}'
-        ).show();
-        quizBrain.reset();
-        scoreKeeper = [];
+      disableButton = true;
+      if (quizBrain.getAnswer(userPickedAnswer) == true) {
+        scoreKeeper.add(Icon(Icons.check, color: Colors.green));
       } else {
-        if (quizBrain.getAnswer(userPickedAnswer) == true) {
-          scoreKeeper.add(Icon(Icons.check, color: Colors.green));
-        } else {
-          scoreKeeper.add(Icon(Icons.close, color: Colors.red));
-          ;
-        }
-        quizBrain.nextQuestion();
+        scoreKeeper.add(Icon(Icons.close, color: Colors.red));
+        ;
       }
     });
   }
@@ -65,7 +54,8 @@ class _QuizPageState extends State<QuizPage> {
     ScrollController _scrollController = ScrollController();
     Timer(
       Duration(seconds: 0),
-          () => _scrollController.jumpTo(_scrollController.position.maxScrollExtent),
+      () =>
+          _scrollController.jumpTo(_scrollController.position.maxScrollExtent),
     );
 
     return Column(
@@ -101,9 +91,9 @@ class _QuizPageState extends State<QuizPage> {
                   fontSize: 20.0,
                 ),
               ),
-              onPressed: () {
+              onPressed: disableButton ? null : () {
                 checkAnswer(true);
-              },
+                },
             ),
           ),
         ),
@@ -120,30 +110,51 @@ class _QuizPageState extends State<QuizPage> {
                   color: Colors.white,
                 ),
               ),
-              onPressed: () {
-                checkAnswer(false);
-              },
+              onPressed: disableButton
+                  ? null
+                  : () {
+                      checkAnswer(false);
+                    },
             ),
           ),
         ),
         Expanded(
           child: ListView.builder(
-            scrollDirection: Axis.horizontal,
-            shrinkWrap: true,
-            controller: _scrollController,
-            itemCount: scoreKeeper.length,
-            itemBuilder: (BuildContext ctxt, int Index){
-              return scoreKeeper[Index];
-            }
-          ),
-        )
+              scrollDirection: Axis.horizontal,
+              shrinkWrap: true,
+              controller: _scrollController,
+              itemCount: scoreKeeper.length,
+              itemBuilder: (BuildContext ctxt, int Index) {
+                return scoreKeeper[Index];
+              }),
+        ),
+        IconButton(
+            onPressed: () {
+              setState(() {
+                disableButton = false;
+                if (quizBrain.isFinished() == true) {
+                  Alert(
+                      context: context,
+                      title: 'Terminado!',
+                      desc: 'Has llegado al final del cuestionario. '
+                          'Con una puntuación de ${quizBrain.getCountCorrect()}/${quizBrain.getSizeBank()}').show();
+                  quizBrain.reset();
+                  scoreKeeper = [];
+                } else {
+                  quizBrain.nextQuestion();
+                }
+              });
+            },
+            icon: Padding(
+              padding: const EdgeInsets.only(bottom: 8.0),
+              child: Icon(
+                Icons.double_arrow,
+                color: Colors.blue,
+                size: 40.0,
+              ),
+            ))
       ],
     );
   }
 }
 
-/*
-question1: 'You can lead a cow down stairs but not up stairs.', false,
-question2: 'Approximately one quarter of human bones are in the feet.', true,
-question3: 'A slug\'s blood is green.', true,
-*/

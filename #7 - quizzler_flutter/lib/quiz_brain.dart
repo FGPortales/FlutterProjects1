@@ -67,6 +67,14 @@ class QuizBrain{
     _countCorrect=0;
   }
 
+  int getCountCorrect(){
+    return _countCorrect;
+  }
+
+  int getSizeBank(){
+    return _questionBank.length;
+  }
+
 
 }
 
