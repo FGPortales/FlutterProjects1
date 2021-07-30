@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="iamrich.flutter.i_am_rich">
+    package="freddygpa.flutter.destini_challenge">
    <application
-        android:label="i_am_rich"
+        android:label="Adventure Game"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"

@@ -1,4 +1,4 @@
-package iamrich.flutter.i_am_rich;
+package freddygpa.flutter.destini_challenge;
 
 import io.flutter.embedding.android.FlutterActivity;
 

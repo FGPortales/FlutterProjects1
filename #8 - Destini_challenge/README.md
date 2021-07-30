@@ -1,4 +1,4 @@
-# Destini Challenge Flutter
+# destini_challenge
 
 A new Flutter application.
 
